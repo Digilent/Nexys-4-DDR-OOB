@@ -16,7 +16,7 @@
 # sdk exclusions
 sdk/.metadata
 sdk/**/*RemoteSystemsTempFiles
-sdk/**/*Debug
+sdk/**/*Debug/*
 sdk/**/*Release
 sdk/**/*webtalk
 
@@ -32,6 +32,10 @@ sdk/*_bsp*/*
 !sdk/*_bsp*/system.mss
 !sdk/*_bsp*/Makefile
 !sdk/*_bsp*/.*project
+
+# include the relevant elf files
+!sdk/**/*Debug/*.elf
+!sdk/**/*Debug/*.elf.size
 
 # Make sure we keep only xci files in repo ip src subfolder
 repo/*/ip/*/src/*/*
