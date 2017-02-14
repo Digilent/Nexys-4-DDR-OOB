@@ -2,7 +2,7 @@
 # If ::create_path global variable is set, the project is created under that path instead of the working dir
 
 # Project specific settings. These must be updated for each project.
-set proj_name "bsd"
+set proj_name "TEMPLATE"
 
 if {[info exists ::create_path]} {
 	set dest_dir $::create_path
@@ -14,8 +14,8 @@ cd $dest_dir
 
 
 
-set part "xc7a35ticsg324-1L"
-set brd_part "digilentinc.com:arty:part0:1.1"
+set part "xc7a100tcsg324-1"
+set brd_part "digilentinc.com:nexys4_ddr:part0:1.1"
 
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir ".."
