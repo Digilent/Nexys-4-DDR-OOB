@@ -2,7 +2,7 @@
 # If ::create_path global variable is set, the project is created under that path instead of the working dir
 
 # Project specific settings. These must be updated for each project.
-set proj_name "TEMPLATE"
+set proj_name "bsd"
 
 if {[info exists ::create_path]} {
 	set dest_dir $::create_path
@@ -14,8 +14,8 @@ cd $dest_dir
 
 
 
-set part "xc7a100tcsg324-1"
-set brd_part "digilentinc.com:nexys4_ddr:part0:1.1"
+set part "xc7a35ticsg324-1L"
+set brd_part "digilentinc.com:arty:part0:1.1"
 
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir ".."
@@ -121,8 +121,8 @@ puts "INFO: Project created:$proj_name"
 
 # Uncomment this block if importing an existing block diagram project
 # Import block design if it exists
-set my_list [glob -nocomplain $src_dir/bd/*/*.bd]
-if {[llength $my_list] != 0} {
+set bd_list [glob -nocomplain $src_dir/bd/*/*.bd]
+if {[llength $bd_list] != 0} {
   add_files -norecurse -quiet -fileset sources_1 [glob -nocomplain $src_dir/bd/*/*.bd]
   open_bd_design [glob -nocomplain $src_dir/bd/*/*.bd]
   set design_name [get_bd_designs]
@@ -142,10 +142,18 @@ if {[llength $my_list] != 0} {
 }
 
 set sdk_dir $origin_dir/sdk
+
+set hw_list [glob -nocomplain $sdk_dir/*hw_platform*]
+if {[llength $hw_list] != 0} {
+  foreach hw_plat $hw_list {
+	file delete -force $hw_plat
+  }
+}
+
 set sdk_list [glob -nocomplain $sdk_dir/*]
 set sdk_list [lsearch -inline -all -not -exact $sdk_list "../sdk/.keep"]
 if {[llength $sdk_list] != 0} {
-	exec xsct -eval "setws -switch workspace; importproject ../sdk"
+	exec xsct -eval "setws -switch ../sdk; importproject ../sdk"
 }
 # 
 # 
