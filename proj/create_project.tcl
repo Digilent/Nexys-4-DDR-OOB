@@ -2,7 +2,7 @@
 # If ::create_path global variable is set, the project is created under that path instead of the working dir
 
 # Project specific settings. These must be updated for each project.
-set proj_name "TEMPLATE"
+set proj_name "OOB"
 
 if {[info exists ::create_path]} {
 	set dest_dir $::create_path
@@ -47,7 +47,7 @@ set_property "simulator_language" "Mixed" $obj
 set_property "target_language" "VHDL" $obj
 
 # Uncomment the following 3 lines to greatly increase build speed while working with IP cores (and/or block diagrams)
-set_property "corecontainer.enable" "0" $obj
+# set_property "corecontainer.enable" "0" $obj
 set_property "ip_cache_permissions" "read write" $obj
 set_property "ip_output_repo" "[file normalize "$origin_dir/repo/cache"]" $obj
 
