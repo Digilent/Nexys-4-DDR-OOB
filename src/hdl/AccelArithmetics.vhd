@@ -86,10 +86,10 @@ COMPONENT Square_Root
     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
   );
 END COMPONENT;
-ATTRIBUTE SYN_BLACK_BOX : BOOLEAN;
-ATTRIBUTE SYN_BLACK_BOX OF Square_Root : COMPONENT IS TRUE;
-ATTRIBUTE BLACK_BOX_PAD_PIN : STRING;
-ATTRIBUTE BLACK_BOX_PAD_PIN OF Square_Root : COMPONENT IS "aclk,s_axis_cartesian_tvalid,s_axis_cartesian_tdata[31:0],m_axis_dout_tvalid,m_axis_dout_tdata[15:0]";
+--ATTRIBUTE SYN_BLACK_BOX : BOOLEAN;
+--ATTRIBUTE SYN_BLACK_BOX OF Square_Root : COMPONENT IS TRUE;
+--ATTRIBUTE BLACK_BOX_PAD_PIN : STRING;
+--ATTRIBUTE BLACK_BOX_PAD_PIN OF Square_Root : COMPONENT IS "aclk,s_axis_cartesian_tvalid,s_axis_cartesian_tdata[31:0],m_axis_dout_tvalid,m_axis_dout_tdata[15:0]";
 
 constant SUM_FACTOR : std_logic_vector (12 downto 0) :=  '0' & X"7FF"; --2047
 constant LOWER_ACC_BOUNDARY : std_logic_vector (9 downto 0) := "00" & X"FF"; -- 255
@@ -117,7 +117,7 @@ signal ACCEL_X_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 signal ACCEL_Y_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 signal ACCEL_Z_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 
-signal ACCEL_MAG_SQUARE : std_logic_vector (25 downto 0) := (others => '0');
+signal ACCEL_MAG_SQUARE : std_logic_vector (31 downto 0) := (others => '0');
 signal ACCEL_MAG_SQRT: std_logic_vector (13 downto 0) := (others => '0');
 signal m_axis_dout_tdata: std_logic_vector (15 downto 0);
 
@@ -225,7 +225,7 @@ Calculate_Square_Sum: process (SYSCLK, Data_Ready_0, ACCEL_X_SQUARE, ACCEL_Y_SQU
 begin
    if SYSCLK'EVENT and SYSCLK = '1' then
       if Data_Ready_0 = '1' then 
-         ACCEL_MAG_SQUARE <= ("00" & ACCEL_X_SQUARE) + ("00" & ACCEL_Y_SQUARE) + ("00" & ACCEL_Z_SQUARE);
+         ACCEL_MAG_SQUARE <= "000000" & (("00" & ACCEL_X_SQUARE) + ("00" & ACCEL_Y_SQUARE) + ("00" & ACCEL_Z_SQUARE));
       end if;
    end if;
 end process Calculate_Square_Sum;
@@ -235,7 +235,7 @@ Magnitude_Calculation : Square_Root
   PORT MAP (
     aclk => SYSCLK,
     s_axis_cartesian_tvalid => Data_Ready_1,
-    s_axis_cartesian_tdata => ("000000" & ACCEL_MAG_SQUARE),
+    s_axis_cartesian_tdata => (ACCEL_MAG_SQUARE),
     m_axis_dout_tvalid => open,
     m_axis_dout_tdata => m_axis_dout_tdata
   );

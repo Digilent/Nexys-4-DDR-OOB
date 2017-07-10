@@ -110,13 +110,14 @@ entity Nexys4DdrUserDemo is
       ps2_clk        : inout std_logic;
       ps2_data       : inout std_logic;
       
-      SCLK_DBG       : out STD_LOGIC;
-      MOSI_DBG       : out STD_LOGIC;
-      MISO_DBG       : out STD_LOGIC;
-      SS_DBG         : out STD_LOGIC;
+      -- Debug output signals
+--      SCLK_DBG       : out STD_LOGIC;
+--      MOSI_DBG       : out STD_LOGIC;
+--      MISO_DBG       : out STD_LOGIC;
+--      SS_DBG         : out STD_LOGIC;
       
-      PS2C_DBG       : out std_logic;
-      PS2D_DBG       : out std_logic;
+--      PS2C_DBG       : out std_logic;
+--      PS2D_DBG       : out std_logic;
       
       -- DDR2 interface signals
       ddr2_addr      : out   std_logic_vector(12 downto 0);
