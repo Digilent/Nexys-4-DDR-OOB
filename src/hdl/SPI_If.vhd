@@ -42,7 +42,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity SPI_If is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer:= 100000000;
+   SYSCLK_FREQUENCY_HZ : integer:= 108000000;
    SCLK_FREQUENCY_HZ : integer:= 1000000
 );
 port

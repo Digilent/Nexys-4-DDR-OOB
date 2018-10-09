@@ -29,7 +29,7 @@ entity Ram2Ddr is
       clk_200MHz_i         : in    std_logic; -- 200 MHz system clock
       rst_i                : in    std_logic; -- active high system reset
       device_temp_i        : in    std_logic_vector(11 downto 0);
-      
+      ui_clk_o             : out   std_logic;
       -- RAM interface
       ram_a                : in    std_logic_vector(26 downto 0);
       ram_dq_i             : in    std_logic_vector(15 downto 0);
@@ -130,7 +130,7 @@ constant CMD_READ          : std_logic_vector(2 downto 0) := "001";
 signal cState, nState      : state_type; 
 
 -- global signals
-signal mem_ui_clk          : std_logic;
+signal mem_ui_clk          : std_logic; 
 signal mem_ui_rst          : std_logic;
 signal rst                 : std_logic;
 signal rstn                : std_logic;
@@ -174,6 +174,7 @@ attribute ASYNC_REG of sreg         : signal is "TRUE";
 ------------------------------------------------------------------------
 begin
    
+   ui_clk_o <= mem_ui_clk;
 ------------------------------------------------------------------------
 -- Registering the active-low reset for the MIG component
 ------------------------------------------------------------------------

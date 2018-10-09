@@ -49,7 +49,7 @@ use IEEE.std_logic_signed.all;
 entity AccelArithmetics is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    ACC_X_Y_MAX         : STD_LOGIC_VECTOR (9 downto 0) := "01" & X"FF"; -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN         : STD_LOGIC_VECTOR (9 downto 0) := (others => '0') -- corresponding to -1g
 );
@@ -107,7 +107,6 @@ signal ACCEL_Y_SUM_SHIFTED : std_logic_vector (9 downto 0) := (others => '0');
 signal ACCEL_X_CLIP : std_logic_vector (9 downto 0) := (others => '0');
 signal ACCEL_Y_CLIP : std_logic_vector (9 downto 0) := (others => '0');
 
-
 -- Calculate magnitude
 
 -- Pipe Data_Ready
@@ -121,15 +120,11 @@ signal ACCEL_MAG_SQUARE : std_logic_vector (31 downto 0) := (others => '0');
 signal ACCEL_MAG_SQRT: std_logic_vector (13 downto 0) := (others => '0');
 signal m_axis_dout_tdata: std_logic_vector (15 downto 0);
 
-
-
-
 begin
 
 -- Invert Accel_Y data to display on the screen the box movement 
 -- on the Y axis according to the board movement
-ACCEL_Y_IN_INV <= (NOT ACCEL_Y_IN) + X"001";
-
+ACCEL_Y_IN_INV <= ACCEL_Y_IN;
 
 -- Add 2047 to the incoming acceleration data
 -- Therefore ACCEL_X_SUM and ACCEL_Y_SUM will be scaled to 
@@ -191,7 +186,7 @@ end process Accel_Clip;
  
 -- ACCEL_X_CLIP and ACCEL_Y_CLIP values (0-511) can be represented on 9 bits
 ACCEL_X_OUT <= ACCEL_X_CLIP(8 downto 0);
-ACCEL_Y_OUT <= ACCEL_Y_CLIP(8 downto 0);
+ACCEL_Y_OUT <= NOT ACCEL_Y_CLIP(8 downto 0);
 
 -- Pipe Data_Ready
 Pipe_Data_Ready : process (SYSCLK, RESET, Data_Ready, Data_Ready_0)
@@ -239,7 +234,6 @@ Magnitude_Calculation : Square_Root
     m_axis_dout_tvalid => open,
     m_axis_dout_tdata => m_axis_dout_tdata
   );
-  
   
  ACCEL_MAG_SQRT <= m_axis_dout_tdata (13 downto 0);
 

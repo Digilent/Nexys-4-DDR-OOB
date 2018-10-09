@@ -36,7 +36,7 @@ use ieee.std_logic_unsigned.all;
 
 entity LedBar is
    generic(
-      C_SYS_CLK_FREQ_MHZ  : integer := 100; -- system clock frequency in MHz
+      C_SYS_CLK_FREQ_MHZ  : integer := 75; -- system clock frequency in MHz
       C_SECONDS_TO_RECORD : integer := 3 -- number of seconds to record
    );
    port(

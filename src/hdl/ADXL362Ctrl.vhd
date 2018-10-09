@@ -89,7 +89,7 @@ use IEEE.math_real.all;
 entity ADXL362Ctrl is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 1000
@@ -120,7 +120,7 @@ architecture Behavioral of ADXL362Ctrl is
 component SPI_If is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer:= 100000000;
+   SYSCLK_FREQUENCY_HZ : integer:= 108000000;
    SCLK_FREQUENCY_HZ : integer:= 1000000
 );
 port

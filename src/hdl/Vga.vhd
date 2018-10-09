@@ -109,16 +109,16 @@ architecture Behavioral of Vga is
 
    -- To generate the 108 MHz Pixel Clock
    -- needed for a resolution of 1280*1024 pixels
-   COMPONENT PxlClkGen
-   PORT
-    (-- Clock in ports
-     CLK_IN1           : in std_logic;
-     -- Clock out ports
-     CLK_OUT1          : out std_logic;
-     -- Status and control signals
-     LOCKED            : out std_logic
-    );
-   END COMPONENT;
+--   COMPONENT PxlClkGen
+--   PORT
+--    (-- Clock in ports
+--     CLK_IN1           : in std_logic;
+--     -- Clock out ports
+--     CLK_OUT1          : out std_logic;
+--     -- Status and control signals
+--     LOCKED            : out std_logic
+--    );
+--   END COMPONENT;
 
    -- Display the Digilent Nexys 4 and Analog Devices Logo
 	COMPONENT LogoDisplay
@@ -721,24 +721,25 @@ signal mouse_cursor_green_dly : std_logic_vector (3 downto 0) := (others => '0')
 signal enable_mouse_display_dly  :  std_logic;
 
 -- Registered Overlay display signal
-signal overlay_en_dly : std_logic;
+signal overlay_en_dly : std_logic; 
 
 begin
   
+  pxl_clk <= CLK_I; 
 ------------------------------------
 
 -- Generate the 108 MHz pixel clock 
 
 ------------------------------------
-   Inst_PxlClkGen: PxlClkGen
-   port map
-    (-- Clock in ports
-     CLK_IN1   => CLK_I,
-     -- Clock out ports
-     CLK_OUT1  => pxl_clk,
-     -- Status and control signals
-     LOCKED   => open
-    );
+--   Inst_PxlClkGen: PxlClkGen
+--   port map
+--    (-- Clock in ports
+--     CLK_IN1   => CLK_I,
+--     -- Clock out ports
+--     CLK_OUT1  => pxl_clk,
+--     -- Status and control signals
+--     LOCKED   => open
+--    );
 
 ---------------------------------------------------------------
 
@@ -820,7 +821,7 @@ register_inputs: process (pxl_clk, v_sync_reg)
 
          ACCEL_RADIUS_REG <= ACCEL_RADIUS;
          LEVEL_THRESH_REG <= LEVEL_THRESH;
-			ACL_X_IN_REG <= ACL_X_IN;
+         ACL_X_IN_REG <= ACL_X_IN;
          ACL_Y_IN_REG <= ACL_Y_IN;
          ACL_MAG_IN_REG <= ACL_MAG_IN;
      

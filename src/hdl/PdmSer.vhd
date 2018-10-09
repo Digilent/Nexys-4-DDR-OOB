@@ -41,7 +41,7 @@ use ieee.std_logic_unsigned.all;
 entity PdmSer is
    generic(
       C_NR_OF_BITS : integer := 16;
-      C_SYS_CLK_FREQ_MHZ : integer := 100;
+      C_SYS_CLK_FREQ_MHZ : integer := 75;
       C_PDM_FREQ_HZ : integer := 2000000
    );
    port(

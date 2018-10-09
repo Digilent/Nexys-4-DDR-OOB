@@ -54,7 +54,7 @@ entity MicDisplay is
 end MicDisplay;
 
 architecture Behavioral of MicDisplay is
-
+ 
 --SAMPLE_OFFSET accounts for the offset from center caused by scaling the microphone sensitivity
 --Calculated for HEIGHT=375 and sensitivy=3x, accounts for overflow in sample_reg
 constant SAMPLE_OFFSET : integer := 105; --95
@@ -114,7 +114,7 @@ signal rd_addr_reg : natural range 0 to (BUF_DEPTH - 1) := 0;
 signal rd_frame_start_reg : natural range 0 to (BUF_DEPTH - 1) := 0;
 
 -- Synchronize the MIC_M_CLK_RISING signal, coming from the 100MHz Clock Domain
-signal mic_m_clk_rising_sync1, mic_m_clk_rising_sync0, mic_m_clk_rising_sync : std_logic;
+signal mic_m_clk_rising_sync1, mic_m_clk_rising_sync0, mic_m_clk_rising_sync, mic_m_clk_rising_syncasync : std_logic;
 -- The MIC_M_CLK_RISING signal legth is two SYSCLK (100MHz) periods length,
 -- therefore create a one-shot signal
 signal mic_m_clk_rising_os : std_logic;
@@ -123,7 +123,7 @@ signal mic_m_clk_rising_os : std_logic;
 signal mic_sr_reg : std_logic_vector (SR_WIDTH - 1 downto 0) := (others=>'0');
 -- Sample register data
 signal sample_reg : std_logic_vector (SAMPLE_WIDTH - 1 downto 0) := (others=>'0');
-
+ 
 -- Counter for the sample rate
 signal clk_cntr_reg : integer range 0 to SAMPLE_RATE_DIV - 1 := 0; 
 
@@ -131,29 +131,42 @@ signal clk_cntr_reg : integer range 0 to SAMPLE_RATE_DIV - 1 := 0;
 signal color_out : std_logic_vector (11 downto 0);
 
 begin
+ 
 
+      
 -------------------------------------------
 ------------     MIC     ------------------
 -------------------------------------------
-
 -- sinchronize MIC_M_CLK_RISING
+SyncAsyncClk: entity work.SyncAsync
+  generic map (
+     kResetTo => '0',
+     kStages => 2) --use double FF synchronizer
+  port map (
+     aReset => '0',
+     aIn => MIC_M_CLK_RISING,
+     OutClk => CLK_I, 
+     oOut => mic_m_clk_rising_syncasync);
+
+-- create the one-shot signal for MIC_M_CLK_RISING      
 process(CLK_I)
 begin
   if (rising_edge(CLK_I)) then
-    mic_m_clk_rising_sync1 <= MIC_M_CLK_RISING;
+    mic_m_clk_rising_sync1 <= mic_m_clk_rising_syncasync;
     mic_m_clk_rising_sync0 <= mic_m_clk_rising_sync1;
     mic_m_clk_rising_sync <= mic_m_clk_rising_sync0;    
   end if;
 end process;
--- create the one-shot signal for MIC_M_CLK_RISING
+
 mic_m_clk_rising_os <= mic_m_clk_rising_sync0 AND (NOT mic_m_clk_rising_sync);
 
---Create the sample rate counter
---mclk = 2 MHz, sample rate = 108MHz / 4096 = ~26.367 KHz
+--Create the sample rate counter 
+--mclk = 2 MHz, sample rate = (SYSCLK)108MHz / 4096 = ~26.367 KHz
+
 process(SYSCLK)
 begin
   if (rising_edge(SYSCLK)) then
-      if clk_cntr_reg = SAMPLE_RATE_DIV - 1 then
+      if clk_cntr_reg = SAMPLE_RATE_DIV - 1 then 
          clk_cntr_reg <= 0;
       else
          clk_cntr_reg <= clk_cntr_reg + 1;
@@ -162,7 +175,7 @@ begin
 end process;
 
 --Enable write sample to RAM (triggered every 1/26367 seconds)
-en_wr_sample_buf_ram <= '1' when clk_cntr_reg = SAMPLE_RATE_DIV - 1 else '0';
+en_wr_sample_buf_ram <= '1' when clk_cntr_reg = SAMPLE_RATE_DIV - 1 else '0'; --buba
 
 -------------------------------------------
 -- Shift in Microphone data
@@ -245,7 +258,7 @@ end process;
 process(CLK_I)
 begin
   if (rising_edge(CLK_I)) then
-    if en_wr_sample_buf_ram = '1' then
+    if en_wr_sample_buf_ram = '1' then 
       sample_buf_ram(wr_addr_reg) <= sample_reg + SAMPLE_OFFSET;
     end if;
     rd_data <= sample_buf_ram(rd_addr_reg);

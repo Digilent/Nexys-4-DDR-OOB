@@ -189,9 +189,9 @@ end component;
 
 
 component AudioDemo is
-   port (
-      -- Common
-      clk_i                : in    std_logic;
+   port ( 
+      -- Common 
+--      clk_i                : in    std_logic;
       clk_200_i            : in    std_logic;
       device_temp_i        : in    std_logic_vector(11 downto 0);
       rst_i                : in    std_logic;
@@ -439,7 +439,7 @@ begin
 ----------------------------------------------------------------------------------
    Inst_Audio: AudioDemo
    port map(
-      clk_i          => clk_100MHz_buf,
+--      clk_i          => clk_100MHz_buf,
       clk_200_i      => clk_200MHz_buf,
       rst_i          => reset,
       device_temp_i  => fpgaTempValue,

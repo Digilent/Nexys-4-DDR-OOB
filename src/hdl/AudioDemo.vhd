@@ -45,7 +45,7 @@ use ieee.std_logic_unsigned.all;
 entity AudioDemo is
    port (
       -- Common
-      clk_i                : in    std_logic;
+--      clk_i                : in    std_logic;
       clk_200_i            : in    std_logic;
       device_temp_i        : in    std_logic_vector(11 downto 0);
       rst_i                : in    std_logic;
@@ -161,7 +161,8 @@ port (
    clk_200MHz_i   : in    std_logic; -- 200 MHz system clock
    rst_i          : in    std_logic; -- active high system reset
    device_temp_i  : in    std_logic_vector(11 downto 0);
-   
+   ui_clk_o       : out   std_logic;
+    
    -- RAM interface
    ram_a          : in    std_logic_vector(26 downto 0);
    ram_dq_i       : in    std_logic_vector(15 downto 0);
@@ -245,8 +246,10 @@ signal btnu_int         : std_logic;
 signal rnw_int          : std_logic;
 signal addr_int         : std_logic_vector(31 downto 0);
 signal done_int         : std_logic;
-
 signal pwm_audio_o_int  : std_logic;
+
+signal ui_clk           : std_logic; 
+signal clk_i           : std_logic; 
 
 -- record
 signal en_des           : std_logic;
@@ -288,6 +291,8 @@ signal mem_lb           : std_logic;
 -- Module Implementation
 ------------------------------------------------------------------------
 begin
+   
+   clk_i <= ui_clk;
    
    Btnu: Dbncr
    generic map(
@@ -350,6 +355,7 @@ begin
       clk_200MHz_i         => clk_200_i,
       rst_i                => rst_i,
       device_temp_i        => device_temp_i,
+      ui_clk_o             => ui_clk,
       -- RAM interface
       ram_a                => mem_a,
       ram_dq_i             => mem_dq_i,

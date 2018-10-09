@@ -42,7 +42,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity AccelerometerCtl is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 100
@@ -72,7 +72,7 @@ architecture Behavioral of AccelerometerCtl is
 component ADXL362Ctrl
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 1000
@@ -101,7 +101,7 @@ end component;
 component AccelArithmetics
 generic
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    ACC_X_Y_MAX         : STD_LOGIC_VECTOR (9 downto 0) := "01" & X"FF"; -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN         : STD_LOGIC_VECTOR (9 downto 0) := (others => '0') -- corresponding to -1g
 );
@@ -190,7 +190,7 @@ port map
 Accel_Calculation: AccelArithmetics
 GENERIC MAP
 (
-   SYSCLK_FREQUENCY_HZ  => 100000000,
+   SYSCLK_FREQUENCY_HZ  => 108000000,
    ACC_X_Y_MAX          => "01" & X"FF", -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN          => (others => '0') -- corresponding to -1g
 )
