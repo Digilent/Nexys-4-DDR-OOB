@@ -8,7 +8,8 @@ set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
 
 # Clock signal
 set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { clk_i }]; #IO_L12P_T1_MRCC_35 Sch=clk100mhz
-create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {clk_i}];
+# syc_clk will be constrained by the MIG IP; commenting it avoids double clock definition and overridden clock definition warnings
+# create_clock -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {clk_i}];
 
 
 ##Switches
